@@ -51,9 +51,14 @@
 			<!--	<div  id="cloud" class="flex-1" ></div> -->
 			<div id="video" class=" flex-1 block-color chart">
   				<div class="title-cover"><span>品牌视频</span></div>
-  				<video id="really-cool-video" class="video-js vjs-default-skin" controls preload="none" poster="img/logo.png">
-				  <source src="mv/mov_bbb.mp4" type='video/mp4'>
-				</video>
+  				<div id="really-cool-video" class="video-js vjs-default-skin" >
+					<object type="application/x-shockwave-flash" data="http://player.youku.com/player.php/sid/XOTYyNTk1MTE2/v.swf" width="100%" height="100%" id="youku-player">
+						<param name="allowFullScreen" value="true">
+						<param name="allowScriptAccess" value="always">
+						<param name="movie" value="http://player.youku.com/player.php/sid/XOTYyNTk1MTE2/v.swf">
+						<param name="flashvars" value="imglogo=&amp;paid=0&amp;partnerId=youkuind_">
+					</object>
+				</div>
 				<div id="countpeople"><span>共</span><span>68894</span><span>人观看</span></div>
 			</div>
 		</div>
@@ -122,34 +127,6 @@
   			myScroll = $(window).scrollTop();
   			$('#mask').html(myScroll);
 		};
-
-/* video 部分 */		
-		var options = {
-			width:$(".chart").width(),
-			height:$(".chart").width() - 30,
-
-			children: {
-			    controlBar: {
-			      children: {
-			        'timeDivider':false,
-			        'volumeControl':false,
-			        'durationDisplay':false,
-			        'liveDisplay':false,
-			        'currentTimeDisplay':false,
-			        'remainingTimeDisplay':false,
-			        'muteToggle':false,
-			      }
-			    }
-			  }
-		};
-		var player = videojs('really-cool-video', options, function() {
-	  		// How about an event listener?
-			this.on('ended', function() {
-			 
-			});
-		});
-
-		$(".video-js").css("background-color","#282e3f");
 
 /*linechart*/
 
