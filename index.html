@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-status-bar-style" content="#a0202c">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,uer-scalabe=no"> 
+	<meta name="theme-color" content="#000">
+	<meta name="apple-touch-fullscreen" content="YES" />
+	<title>home</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link href="css/video-js.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/circle.css" media="screen" type="text/css" />	
+	<link rel="stylesheet" type="text/css" href="css/public.css">
+	<script type="text/javascript" src="js/modernizr.js"></script>
+</head>
+<body>
+<div id="wrap" class="">
+	<header id="head" class="flex ">
+		<div id="left-head" class="flex-1">
+			<div id="logo"><img src="img/logo.png"></div>
+			<div id="brand-index"><span>品牌指数：</span><span>551722</span></div>
+			<div id="brand-des">
+				<ul>
+					<li>品牌曝光度高</li>
+					<li>国内百强企业</li>
+					<li>新媒体属性强</li>
+					<li>消费者认知度高</li>
+				</ul>
+			</div>
+		</div>
+		<div id="right-head" class="flex-1" style="height:180px;margin-top:35px;">
+		
+		</div>
+	</header>
+
+
+	<div id="body" class=" flex direction">
+		<div class="blocks flex flex-1">
+			<div id="reports" class="left-block flex-1 block-color">
+				<div class="title-cover"><span>媒体报道</span></div>
+				<div id="media">
+					<ul class="">
+						<li class=""><img class="img-logo" src="img/sina.png" ><img class="line" src="img/line.png"><span class="num">10000</span></li>
+						<li class=""><img class="img-logo" src="img/baidu.png"><img class="line" src="img/line.png"><span class="num">20000</span></li>
+						<li class=""><img class="img-logo" src="img/sohu.png"><img class="line" src="img/line.png"><span class="num">30000</span></li>
+						<li class=""><img class="img-logo" src="img/qq.png"><img class="line" src="img/line.png"><span class="num">40000000</span></li>
+					</ul>
+				</div>
+				<div id = "cloud" class="" style="width:147px;height:55px;"></div>
+			</div>
+			<!--	<div  id="cloud" class="flex-1" ></div> -->
+			<div id="video" class=" flex-1 block-color chart">
+  				<div class="title-cover"><span>品牌视频</span></div>
+  				<video id="really-cool-video" class="video-js vjs-default-skin" controls preload="none" poster="img/logo.png">
+				  <source src="mv/mov_bbb.mp4" type='video/mp4'>
+				</video>
+				<div id="countpeople"><span>共</span><span>68894</span><span>人观看</span></div>
+			</div>
+		</div>
+		<div class="blocks flex flex-1">
+			<div id="chart1" class="left-block block-color "data-linezoom >
+				<div class="title-cover"><span>电商数据</span></div>
+				<div class="diagram">
+					<div id="first" style="margin: 0 auto" ></div>
+				</div>
+				<div id="chart_icon"><span class="sell">日销售量</span><span class="p-num">日访问人数</span></div>
+			</div>
+			
+			<div id="chart2" class="flex-1 charts-container cf" >
+				<div class="title-cover"><span>微信公众平台</span></div>
+				<div class="chart circle toTop diagram" id="circle" data-zoom></div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+    <div id="mask">
+    </div>
+    <style>
+        #mask {
+            width: 100%;
+            background-color: #666;
+            opacity: 90%;
+            z-index: 100;
+            position: fixed;
+         
+      		top: 0;
+            display: -webkit-flex;
+            display:         flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            height: 100%;
+
+        }
+        #main .text {
+            position: absolute;
+        }
+        
+    </style>
+	<script src='js/jquery.js'></script>
+	<script src="js/d3.js"></script>
+	<script src="js/d3.layout.cloud.js"></script>
+	<script src="js/WordCloud.js"></script>
+	<script src='js/snap.svg-min.js'></script>
+	<script src="js/highcharts.js"></script>
+	<script src="js/circle.js"></script>
+	<script src="js/video.js"></script>
+
+
+	<script type="text/javascript">
+
+/* 		var wordcloud = new WordCloud({
+		    words: ["I", "love", "you", "my", "honey"],
+		    container: "#cloud",
+		    size: 60,
+		    deg: 45 
+		});
+		wordcloud.draw();  */
+		var scrollHandler = function(){
+  			myScroll = $(window).scrollTop();
+  			$('#mask').html(myScroll);
+		};
+
+/* video 部分 */		
+		var options = {
+			width:$(".chart").width(),
+			height:$(".chart").width() - 30,
+
+			children: {
+			    controlBar: {
+			      children: {
+			        'timeDivider':false,
+			        'volumeControl':false,
+			        'durationDisplay':false,
+			        'liveDisplay':false,
+			        'currentTimeDisplay':false,
+			        'remainingTimeDisplay':false,
+			        'muteToggle':false,
+			      }
+			    }
+			  }
+		};
+		var player = videojs('really-cool-video', options, function() {
+	  		// How about an event listener?
+			this.on('ended', function() {
+			 
+			});
+		});
+
+		$(".video-js").css("background-color","#282e3f");
+
+/*linechart*/
+
+			var draw = function(container,data1,data2,width,height,fontsize) {
+				var chart = new Highcharts.Chart({
+			        chart: {
+			            zoomType: 'xy',
+			            backgroundColor: "#282e3f",
+			            width:width,
+			            height:height,
+			     //       marginLeft: 30,
+			      //      marginRight: 40,
+			            marginTop: 15,
+			            spacing: 0,
+			            renderTo: container,
+			        },
+			        credits:{
+			        	enabled: false
+			        },
+			        xAxis: [{
+			            labels: {
+			                rotation:-10,
+			                style: {
+			                	color:'#C3b27f',
+			                //	fontsize:'3px',
+			                },
+			                distance: 0
+			            },
+			            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul'],
+			        }],
+			        yAxis: [{  // Primary yAxis
+			            labels: {
+			                rotation:-10,
+			                style: {
+			                	color:'#9c5766',
+			                },
+			                distance: 0
+			            },
+			            title: {
+			                text: '日销售量',
+			                style:{
+			                	color:'#9c5766',
+			                },
+			                margin: 0
+			            }
+			        }, {
+			        	labels: {
+			                rotation:-10,
+			                style: {
+			                	color:'#457A70',
+			                },
+			                distance: 0
+			            },
+			            title: {
+			                text: '日访问人数',
+			                style:{
+			                	color:'#457A70',
+			                },
+			                margin: 0
+			            },
+			            opposite: true
+			        }],
+			        title: {
+			        	text: null
+			        },
+			        series: [{
+			            name: '日销售额',
+			            type: 'column',
+			            yAxis: 1,
+			            data: data1,
+			            showInLegend: false,
+			            color: "#9c5766",
+			            borderWidth:0
+			        }, {
+			            name: '日访问人数',
+			            type: 'line',
+			            data: data2,
+			            yAxis: 0,
+			            showInLegend: false,
+			            color: "#457A70",
+			        }]
+			    });
+				$('#'+container+' text').css('font-size', fontsize);
+				chart.container.onclick = function(e) {
+
+				}
+			};
+			draw("first",[409.9, 771.5, 10076.4, 1729.2, 1744.0, 1776.0, 1735.6],[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],$(".chart").width(),$(".chart").width()-16,'6px');
+	//		draw("#second",[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],"#457A70");     
+
+		
+
+/*circle*/
+		var data = [
+			{numbers:200000,process:20.5222,label:"累计关注人数",color:"#c8aa75"},
+			{numbers:400000,process:40.5,label:"30日总阅读量",color:"#51b994"},
+			{numbers:600000,process:30.8,label:"30日总转发量",color:"#485aa0"}
+		];
+		var circle = new Circle({
+		    container: '#circle',
+		    data: data
+		});
+		circle.draw();
+	</script>
+	<script >
+	    var cloud = function (container, words) {
+			var wordcloud = new WordCloud({
+				words: words,
+				container: container,
+				size: 15,
+				deg: 45,
+				height: $(container).parent().height() * 0.9
+			});
+			wordcloud.draw();
+
+			var count = 0;
+			var flag = 1;
+			var events = [];
+			$(container+" text").each(function(i) {
+			events[i] = Math.ceil(Math.random() * 10) < 5 ? 1 : 0;
+			});
+			events[0] = 1;
+			console.log(events);
+			var breath = function () {
+				$(container+" text").each(function(i) {
+				    if (events[i] === 0)
+				        return;
+				    count++;
+				    if (count >= 50) {
+				        count = 0;
+				        flag *= -1;
+				    }
+				    var size = $(this).css("font-size");
+				    size = size.slice(0,-2);
+				    size = parseInt(size);
+				    size += flag;
+				    $(this).css("font-size", size+"px");
+				});
+			}
+			setInterval(breath, 50);
+		}
+	$(function(){
+		$(".chart").height($(".chart").width());
+		$("#reports").height($(".chart").width() + 20);
+		$("#video").height($(".chart").width() + 20);
+		$("#really-cool-video").width($(".chart").width());
+		$("#really-cool-video").height($(".chart").width() - 30);
+		$("#cloud ").width($(".chart").width());
+		$("#cloud ").height($(".chart").width()-$("#media").height() -25);
+		$("#right-head").width($(window).width() / 2);
+// floating text
+		/*var words = ["I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double"];   */
+		var words = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
+
+		cloud("#right-head", words);
+	});
+
+/* cloud words */
+			var cloudwords = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
+			var cloud2 = new WordCloud({
+				words: cloudwords,
+				container: "#cloud",
+				size: 1,
+				deg: 360
+			});
+			cloud2.draw();
+	//	});
+
+		$(window).resize(function(){
+		if($("#mask").css('display') == 'none') {
+			$(".chart").height($(".chart").width());
+			$("#reports").height($(".chart").width() + 20);
+			$("#video").height($(".chart").width() + 20);
+			$("#really-cool-video").width($(".chart").width());
+			$("#really-cool-video").height($(".chart").width() - 30);
+			$("#cloud ").width($(".chart").width());
+			$("#cloud ").height($(".chart").width()-$("#media").height() -25);
+			$("#right-head").width($(window).width() / 2);
+			$("#chart1").width($(".chart").width());
+			$("#chart1").height($(".chart").width()+25);
+			draw("first",[409.9, 771.5, 10076.4, 1729.2, 1744.0, 1776.0, 1735.6],[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],$(".chart").width(),$(".chart").width()-16,'6px');
+			}
+			cloud2.draw();
+			cloud("#right-head", words);
+		
+		});
+// zoom chart
+		
+        $("#mask").toggle();
+
+        var width = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
+
+        $("[data-zoom]").on("click", function() {
+
+            var chart = $(this).clone();
+            chart.height("");
+            chart.width(width);
+            $("#mask").empty();
+            $("#mask").append(chart);
+            $("#mask").toggle();
+        });
+         $("[data-linezoom]").on("click", function() {
+         	$("#mask").append('<div id="second"></div>');
+         	draw("second",[409.9, 771.5, 10076.4, 1729.2, 1744.0, 1776.0, 1735.6],[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],width,width);
+          //  $("#mask").empty();
+            $("#mask").toggle();
+        });
+        $("#mask").on("click", function() {
+            $("#mask").empty();
+            $("#mask").toggle();
+        });
+
+
+
+
+
+    </script>
+</body>
+</html>
