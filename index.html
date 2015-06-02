@@ -75,7 +75,6 @@
 	</div>
 </div>
     <div id="mask">
-    <div><a href=""><img src="img/"style=""></a></div>
     </div>
     <style>
         #mask {
@@ -227,73 +226,9 @@
 		});
 		circle.draw();
 	</script>
-	<script >
-	    var cloud = function (container, words) {
-			var wordcloud = new WordCloud({
-				words: words,
-				container: container,
-				size: 15,
-				deg: 45,
-				height: $(container).parent().height() * 0.9
-			});
-			wordcloud.draw();
+	<script>
 
-			var count = 0;
-			var flag = 1;
-			var events = [];
-			$(container+" text").each(function(i) {
-			events[i] = Math.ceil(Math.random() * 10) < 5 ? 1 : 0;
-			});
-			events[0] = 1;
-			/*$(container+" text").each(function(i){
-				if(events[i] === 0)
-					return;
-				$(this).attr("class","font-size-animation");
-			});  */
-			var breath = function () {
-				$(container+" text").each(function(i) {
-				    if (events[i] === 0)
-				        return;
-				    count++;
-				    if (count >= 50) {
-				        count = 0;
-				        flag *= -1;
-				    }
-				    var size = $(this).css("font-size");
-				    size = size.slice(0,-2);
-				    size = parseInt(size);
-				    size += flag;
-				    $(this).css("font-size", size+"px");
-				});
-			}
-			setInterval(breath, 50);
-		}
-	$(function(){
-		$(".chart").height($(".chart").width());
-		$("#reports").height($(".chart").width() + 20);
-		$("#video").height($(".chart").width() + 20);
-		$("#really-cool-video").width($(".chart").width());
-		$("#really-cool-video").height($(".chart").width() - 30);
-		$("#cloud ").width($(".chart").width());
-		$("#cloud ").height($(".chart").width()-$("#media").height() -25);
-		$("#right-head").width($(window).width() / 2);
-		var words = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
-		cloud("#right-head", words);
-	});
-
-/* cloud words */
-			var cloudwords = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","美容养生"];
-			var cloud2 = new WordCloud({
-				words: cloudwords,
-				container: "#cloud",
-				size: 3,
-				deg: 360
-			});
-			cloud2.draw();
-	//	});
-
-		$(window).resize(function(){
-		if($("#mask").css('display') == 'none') {
+		$(function(){
 			$(".chart").height($(".chart").width());
 			$("#reports").height($(".chart").width() + 20);
 			$("#video").height($(".chart").width() + 20);
@@ -302,13 +237,71 @@
 			$("#cloud ").width($(".chart").width());
 			$("#cloud ").height($(".chart").width()-$("#media").height() -25);
 			$("#right-head").width($(window).width() / 2);
-			$("#chart1").width($(".chart").width());
-			$("#chart1").height($(".chart").width()+25);
-			draw("first",[409.9, 771.5, 10076.4, 1729.2, 1744.0, 1776.0, 1735.6],[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],$(".chart").width(),$(".chart").width()-16,'6px');
+		});
+
+		var words = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
+    	var cloud_option1 = {
+			words: words,
+			container: "#right-head",
+			size: 15,
+			deg: 45,
+			isBreath: true
+		};
+		var wordcloud = new WordCloud(cloud_option1);
+
+/* cloud words */
+		var cloudwords = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","美容养生"];
+		var cloud_option2 = {
+			words: cloudwords,
+			container: "#cloud",
+			size: 5,
+			deg: 360
+		};
+		var cloud2 = new WordCloud(cloud_option2);
+
+		if ($(window).width() > $(window).height()) {
+			cloud_option1.size = 40;
+			wordcloud.init(cloud_option1);
+			cloud_option2.size = 20;
+			cloud2.init(cloud_option2);
+		} else {
+			cloud_option1.size = 15;
+			wordcloud.init(cloud_option1);
+			cloud_option2.size = 5;
+			cloud2.init(cloud_option2);
+		}
+
+		cloud2.draw();
+		wordcloud.draw();
+
+		$(window).resize(function(){
+			if($("#mask").css('display') == 'none') {
+				$(".chart").height($(".chart").width());
+				$("#reports").height($(".chart").width() + 20);
+				$("#video").height($(".chart").width() + 20);
+				$("#really-cool-video").width($(".chart").width());
+				$("#really-cool-video").height($(".chart").width() - 30);
+				$("#cloud ").width($(".chart").width());
+				$("#cloud ").height($(".chart").width()-$("#media").height() -25);
+				$("#right-head").width($(window).width() / 2);
+				$("#chart1").width($(".chart").width());
+				$("#chart1").height($(".chart").width()+25);
+				draw("first",[409.9, 771.5, 10076.4, 1729.2, 1744.0, 1776.0, 1735.6],[89.9, 71.5, 100.4, 149.2, 114.0, 126.0, 195.6],$(".chart").width(),$(".chart").width()-16,'6px');
+			}
+
+			if ($(window).width() > $(window).height()) {
+				cloud_option1.size = 40;
+				wordcloud.init(cloud_option1);
+				cloud_option2.size = 20;
+				cloud2.init(cloud_option2);
+			} else {
+				cloud_option1.size = 15;
+				wordcloud.init(cloud_option1);
+				cloud_option2.size = 3;
+				cloud2.init(cloud_option2);
 			}
 			cloud2.draw();
-			cloud("#right-head", words);
-		
+			wordcloud.draw();
 		});
 // zoom chart
 		
@@ -335,8 +328,6 @@
             $("#mask").empty();
             $("#mask").toggle();
         });
-
-
 
 
 

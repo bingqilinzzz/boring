@@ -12,7 +12,7 @@ WordCloud.prototype.init = function(options) {
     this.size = options.size ? options.size : 20;
     this.font = options.font ? options.font : "Impact";
     this.container = options.container ? options.container : "body";
-    //console.log(bound);
+    this.isBreath = options.isBreath ? true : false;
 }
 
 WordCloud.prototype.draw = function() {
@@ -20,13 +20,12 @@ WordCloud.prototype.draw = function() {
     var deg = this.deg;
     var size = this.size;
     var container = this.container;
-    var bound = d3.select(this.container).node().getBoundingClientRect();
-    var width = bound.width;
-    var height = bound.height;
+    var width = $(this.container).width();
+    var height = $(this.container).height();
     jQuery(container).empty();
     d3.layout.cloud().size([width, height])
     .words(this.words.map(function(d) {
-        return {text: d, size: 5 + Math.random() * size};
+        return {text: d, size: 4 + Math.random() * size};
     }))
     .rotate(function() { return ~~(Math.random() * 2) * deg; })
     .font(this.font)
@@ -53,6 +52,40 @@ WordCloud.prototype.draw = function() {
             })
         .text(function(d) { return d.text; });
     }
+
+    if (this.isBreath) {
+        this.breath();
+    }
+}
+
+WordCloud.prototype.breath = function() {
+    var count = 0;
+    var flag = 1;
+    var events = [];
+    var container = this.container;
+    $(container+" text").each(function(i) {
+        events[i] = Math.ceil(Math.random() * 10) < 5 ? 1 : 0;
+    });
+    events[0] = 1;
+
+    var breath = function () {
+        $(container+" text").each(function(i) {
+            if (events[i] === 0)
+                return;
+            var size = $(this).css("font-size");
+            size = size.slice(0,-2);
+            size = parseInt(size);
+            size += flag;
+            $(this).css("font-size", size+"px");
+            count++;
+            if (count > 50) {
+                count = 0;
+                flag *= -1;
+            }
+        });
+    }
+    clearInterval(this.interval);
+    this.interval = setInterval(breath, 50);
 }
 
 window.WordCloud = WordCloud;
