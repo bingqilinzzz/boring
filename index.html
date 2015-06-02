@@ -244,24 +244,13 @@
 			events[i] = Math.ceil(Math.random() * 10) < 5 ? 1 : 0;
 			});
 			events[0] = 1;
-			console.log(events);
-			var breath = function () {
-				$(container+" text").each(function(i) {
-				    if (events[i] === 0)
-				        return;
-				    count++;
-				    if (count >= 50) {
-				        count = 0;
-				        flag *= -1;
-				    }
-				    var size = $(this).css("font-size");
-				    size = size.slice(0,-2);
-				    size = parseInt(size);
-				    size += flag;
-				    $(this).css("font-size", size+"px");
-				});
-			}
-			setInterval(breath, 50);
+		//	console.log(events);
+			$(container+" text").each(function(i){
+				if(events[i] === 0)
+					return;
+		//		console.log(1);
+				$(this).attr("class","font-size-animation");
+			});
 		}
 	$(function(){
 		$(".chart").height($(".chart").width());
@@ -272,10 +261,7 @@
 		$("#cloud ").width($(".chart").width());
 		$("#cloud ").height($(".chart").width()-$("#media").height() -25);
 		$("#right-head").width($(window).width() / 2);
-// floating text
-		/*var words = ["I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double","I", "love", "you", "my", "honey", "See","thanks","a","lot","try","something","out","of","my","place","double"];   */
 		var words = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
-
 		cloud("#right-head", words);
 	});
 

@@ -255,6 +255,18 @@ video::-webkit-media-controls {
   line-height:12px;
   font-size: 6px;
 }
+.font-size-animation {
+  -webkit-animation:font-size-zoom 1s ease infinite alternate;
+  animation:font-size-zoom 1s ease infinite alternate;
+}
+@keyframes font-size-zoom {
+  from{
+    font-size:calc(150%);
+  }
+  to {
+    font-size:80%;
+  }
+}
 /* layout style  */
 .flex {
   display: -webkit-box;
