@@ -46,7 +46,7 @@
 						<li class=""><img class="img-logo" src="img/qq.png"><img class="line" src="img/line.png"><span class="num">40000000</span></li>
 					</ul>
 				</div>
-				<div id = "cloud" class="" style="width:147px;height:55px;"></div>
+				<div id = "cloud" class="" style="width:147px;height:55px;background-color:#fff;"></div>
 			</div>
 			<!--	<div  id="cloud" class="flex-1" ></div> -->
 			<div id="video" class=" flex-1 block-color chart">
@@ -75,6 +75,7 @@
 	</div>
 </div>
     <div id="mask">
+    <div><a href=""><img src="img/"style=""></a></div>
     </div>
     <style>
         #mask {
@@ -244,13 +245,28 @@
 			events[i] = Math.ceil(Math.random() * 10) < 5 ? 1 : 0;
 			});
 			events[0] = 1;
-		//	console.log(events);
-			$(container+" text").each(function(i){
+			/*$(container+" text").each(function(i){
 				if(events[i] === 0)
 					return;
-		//		console.log(1);
 				$(this).attr("class","font-size-animation");
-			});
+			});  */
+			var breath = function () {
+				$(container+" text").each(function(i) {
+				    if (events[i] === 0)
+				        return;
+				    count++;
+				    if (count >= 50) {
+				        count = 0;
+				        flag *= -1;
+				    }
+				    var size = $(this).css("font-size");
+				    size = size.slice(0,-2);
+				    size = parseInt(size);
+				    size += flag;
+				    $(this).css("font-size", size+"px");
+				});
+			}
+			setInterval(breath, 50);
 		}
 	$(function(){
 		$(".chart").height($(".chart").width());
@@ -266,11 +282,11 @@
 	});
 
 /* cloud words */
-			var cloudwords = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康"];
+			var cloudwords = ["保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","化妆品","旗袍夫人","电子商务","女性健康","保健食品","美容养生","美容养生"];
 			var cloud2 = new WordCloud({
 				words: cloudwords,
 				container: "#cloud",
-				size: 1,
+				size: 3,
 				deg: 360
 			});
 			cloud2.draw();
